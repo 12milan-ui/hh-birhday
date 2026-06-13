@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Santona! 🎂</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #1a0533 0%, #2d0a5e 50%, #1a0533 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: system-ui, sans-serif;
+}
+#app {
+  min-height: 640px;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 24px; position: relative; overflow: hidden;
+  width: 100%; max-width: 520px;
+}
+.stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.star { position: absolute; border-radius: 50%; background: white; animation: twinkle 2s infinite alternate; }
+@keyframes twinkle { from { opacity: 0.3; } to { opacity: 1; } }
+#app > * { position: relative; z-index: 1; }
+.title { color: #FFD700; font-size: 28px; font-weight: 600; text-align: center; margin-bottom: 6px; text-shadow: 0 0 20px #FFD700; letter-spacing: 1px; }
+.subtitle { color: #FFB3D9; font-size: 14px; text-align: center; margin-bottom: 16px; }
+
+.camera-section {
+  width: 240px; height: 170px; border-radius: 14px;
+  border: 2px solid #7B2FBE; overflow: hidden;
+  position: relative; margin-bottom: 12px; background: #0a0015;
+  z-index: 2;
+}
+#camVideo {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scaleX(-1); display: block;
+  position: absolute; top: 0; left: 0; z-index: 1;
+}
+.cam-placeholder {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 8px; color: #888; font-size: 12px; z-index: 2;
+}
+.cam-bottom-bar {
+  position: absolute; bottom: 0; left: 0; width: 100%;
+  background: rgba(0,0,0,0.5); padding: 5px 10px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 3;
+}
+.mic-bar-wrap { display: flex; align-items: flex-end; gap: 3px; height: 22px; }
+.mic-bar { width: 5px; background: #b06aff; border-radius: 2px; min-height: 3px; transition: height 0.06s; }
+.cam-status { color: #ccc; font-size: 10px; }
+
+.blow-hint { color: #FFD700; font-size: 13px; text-align: center; margin-bottom: 10px; min-height: 20px; }
+
+.cake-wrap { position: relative; display: flex; flex-direction: column; align-items: center; }
+.cake-tier { border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; }
+.tier-top { width: 170px; height: 58px; background: linear-gradient(180deg, #FF69B4 0%, #E83F8F 100%); margin-bottom: 2px; }
+.tier-bot { width: 220px; height: 68px; background: linear-gradient(180deg, #C23B7C 0%, #9B1B5C 100%); }
+.frosting-top { position: absolute; top: -7px; left: 0; width: 100%; height: 14px; background: white; border-radius: 8px 8px 0 0; }
+.frosting-drip { position: absolute; top: 7px; width: 17px; height: 13px; background: white; border-radius: 0 0 50% 50%; }
+.deco-dot { position: absolute; width: 10px; height: 10px; border-radius: 50%; }
+.candle-group { position: absolute; top: -95px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; }
+.candle { display: flex; flex-direction: column; align-items: center; position: relative; cursor: pointer; }
+.candle-body { width: 13px; border-radius: 3px; }
+.candle-wick { width: 2px; height: 7px; background: #555; border-radius: 1px; }
+.flame-wrap { width: 18px; height: 26px; display: flex; align-items: flex-end; justify-content: center; position: relative; transition: opacity 0.4s; }
+.flame-outer { position: absolute; width: 22px; height: 28px; border-radius: 50%; opacity: 0.3; top: -1px; left: -2px; }
+.flame-inner { width: 11px; height: 18px; border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%; }
+@keyframes flicker {
+  0%,100% { transform: scaleX(1) scaleY(1) rotate(-2deg); }
+  25% { transform: scaleX(0.85) scaleY(1.1) rotate(2deg); }
+  50% { transform: scaleX(1.1) scaleY(0.9) rotate(-1deg); }
+  75% { transform: scaleX(0.9) scaleY(1.05) rotate(3deg); }
+}
+.flame-inner { animation: flicker 0.3s infinite ease-in-out; }
+@keyframes smokeRise { 0% { opacity:0.8; transform: translateY(0) scale(1); } 100% { opacity:0; transform: translateY(-28px) scale(3); } }
+.smoke { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: rgba(200,200,200,0.55); animation: smokeRise 1s ease-out forwards; }
+.plate { width: 255px; height: 17px; background: #f0e6d3; border-radius: 50%; margin-top: -4px; box-shadow: 0 4px 10px rgba(0,0,0,0.35); }
+
+.status-bar { margin-top: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.blow-meter-wrap { width: 200px; height: 11px; background: rgba(255,255,255,0.15); border-radius: 6px; overflow: hidden; }
+.blow-meter-fill { height: 100%; background: linear-gradient(90deg, #7B2FBE, #FFD700); border-radius: 6px; width: 0%; transition: width 0.08s; }
+.btn-start { background: transparent; border: 1.5px solid #7B2FBE; color: #D4A8FF; padding: 10px 28px; border-radius: 10px; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+.btn-start:hover { background: rgba(123,47,190,0.3); }
+.btn-relight { display: none; background: transparent; border: 1.5px solid #FFD700; color: #FFD700; padding: 8px 22px; border-radius: 10px; cursor: pointer; font-size: 13px; transition: background 0.2s; }
+.btn-relight:hover { background: rgba(255,215,0,0.15); }
+
+.celebration { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; }
+.confetti-piece { position: absolute; width: 9px; height: 9px; border-radius: 2px; animation: confettiFall linear forwards; }
+@keyframes confettiFall { 0% { opacity:1; transform: translateY(-10px) rotate(0deg); } 100% { opacity:0; transform: translateY(110vh) rotate(720deg); } }
+.wish-text { display: none; color: #FFD700; font-size: 20px; text-align: center; font-weight: 600; text-shadow: 0 0 18px #FFD700; margin-top: 10px; animation: pulse 1.5s infinite alternate; }
+@keyframes pulse { from { opacity: 0.7; } to { opacity: 1; } }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="celebration" id="celebration"></div>
+
+<div id="app">
+  <div class="title">🎂 Happy Birthday, Santona! 🎂</div>
+  <div class="subtitle">Blow out the candles to make a wish!</div>
+
+  <div class="camera-section">
+    <video id="camVideo" autoplay muted playsinline></video>
+    <div class="cam-placeholder" id="camPlaceholder">
+      <span style="font-size:32px;">📷</span>
+      <span>Camera will appear here</span>
+    </div>
+    <div class="cam-bottom-bar">
+      <div class="mic-bar-wrap">
+        <div class="mic-bar" id="b1" style="height:4px"></div>
+        <div class="mic-bar" id="b2" style="height:8px"></div>
+        <div class="mic-bar" id="b3" style="height:12px"></div>
+        <div class="mic-bar" id="b4" style="height:7px"></div>
+        <div class="mic-bar" id="b5" style="height:10px"></div>
+      </div>
+      <div class="cam-status" id="camStatus">Ready</div>
+    </div>
+  </div>
+
+  <div class="blow-hint" id="blowHint">Press Start — then blow into your mic! 💨</div>
+
+  <div class="cake-wrap">
+    <div class="candle-group" id="candleGroup"></div>
+
+    <div class="cake-tier tier-top" style="position:relative;">
+      <div class="frosting-top">
+        <div class="frosting-drip" style="left:8px"></div>
+        <div class="frosting-drip" style="left:40px;top:8px"></div>
+        <div class="frosting-drip" style="left:70px;top:5px"></div>
+        <div class="frosting-drip" style="left:102px;top:9px"></div>
+        <div class="frosting-drip" style="left:132px;top:6px"></div>
+      </div>
+      <div class="deco-dot" style="background:#FFD700;top:22px;left:20px"></div>
+      <div class="deco-dot" style="background:#FF6B6B;top:32px;left:52px"></div>
+      <div class="deco-dot" style="background:#4FC3F7;top:20px;left:82px"></div>
+      <div class="deco-dot" style="background:#FFD700;top:30px;left:112px"></div>
+      <div class="deco-dot" style="background:#FF6B6B;top:22px;left:138px"></div>
+    </div>
+
+    <div class="cake-tier tier-bot" style="position:relative;">
+      <div class="frosting-top">
+        <div class="frosting-drip" style="left:5px"></div>
+        <div class="frosting-drip" style="left:36px;top:9px"></div>
+        <div class="frosting-drip" style="left:66px;top:5px"></div>
+        <div class="frosting-drip" style="left:96px;top:11px"></div>
+        <div class="frosting-drip" style="left:128px;top:5px"></div>
+        <div class="frosting-drip" style="left:158px;top:9px"></div>
+        <div class="frosting-drip" style="left:186px;top:4px"></div>
+      </div>
+      <div class="deco-dot" style="background:#A5D6A7;top:30px;left:20px"></div>
+      <div class="deco-dot" style="background:#FFD700;top:38px;left:58px"></div>
+      <div class="deco-dot" style="background:#FF6B6B;top:27px;left:94px"></div>
+      <div class="deco-dot" style="background:#4FC3F7;top:40px;left:134px"></div>
+      <div class="deco-dot" style="background:#FFD700;top:28px;left:174px"></div>
+    </div>
+
+    <div class="plate"></div>
+  </div>
+
+  <div class="status-bar">
+    <div class="blow-meter-wrap" id="meterWrap" style="display:none">
+      <div class="blow-meter-fill" id="blowFill"></div>
+    </div>
+    <button class="btn-start" id="startBtn">🎤 Start Experience</button>
+    <button class="btn-relight" id="relightBtn">🕯️ Relight Candles</button>
+  </div>
+  <div class="wish-text" id="wishText">🌟 Make a wish, Santona! 🌟</div>
+</div>
+
+<script>
+const COLORS = ['#FF6B6B','#FFD700','#4FC3F7','#A5D6A7','#FF69B4'];
+let candleStates = [true,true,true,true,true];
+let analyser, dataArray, blowAccum = 0, allBlown = false, started = false;
+
+// Stars
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+  const s = document.createElement('div'); s.className = 'star';
+  const sz = Math.random() * 3 + 1;
+  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*2}s;animation-duration:${1+Math.random()*2}s`;
+  starsEl.appendChild(s);
+}
+
+function buildCandles() {
+  const cg = document.getElementById('candleGroup');
+  cg.innerHTML = '';
+  candleStates = [true,true,true,true,true];
+  allBlown = false;
+  document.getElementById('wishText').style.display = 'none';
+  document.getElementById('relightBtn').style.display = 'none';
+  document.getElementById('blowHint').textContent = started
+    ? 'Blow into your mic to put out candles! 💨'
+    : 'Press Start — then blow into your mic! 💨';
+
+  COLORS.forEach((color, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'candle'; wrap.id = 'c' + i;
+    const h = 36 + Math.random() * 14;
+    wrap.innerHTML = `
+      <div class="flame-wrap" id="fw${i}">
+        <div class="flame-outer" style="background:${color}"></div>
+        <div class="flame-inner" style="background:linear-gradient(180deg,#fff 0%,${color} 55%,#FF6B00 100%)"></div>
+      </div>
+      <div class="candle-wick"></div>
+      <div class="candle-body" style="height:${h}px;background:linear-gradient(180deg,${color},${color}99)"></div>`;
+    wrap.addEventListener('click', () => { blowOut(i); checkDone(); });
+    cg.appendChild(wrap);
+  });
+}
+buildCandles();
+
+function blowOut(i) {
+  if (!candleStates[i]) return;
+  candleStates[i] = false;
+  const fw = document.getElementById('fw' + i);
+  if (fw) fw.style.opacity = '0';
+  const candle = document.getElementById('c' + i);
+  for (let s = 0; s < 4; s++) {
+    const p = document.createElement('div'); p.className = 'smoke';
+    p.style.cssText = `top:${-20 - s*4}px;left:${4 + Math.random()*8 - 4}px;position:absolute;animation-delay:${s*0.12}s`;
+    candle.appendChild(p);
+    setTimeout(() => p.remove(), 1500);
+  }
+}
+
+function checkDone() {
+  if (!allBlown && candleStates.every(s => !s)) {
+    allBlown = true;
+    document.getElementById('blowHint').textContent = '🎉 All candles out!';
+    document.getElementById('wishText').style.display = 'block';
+    document.getElementById('relightBtn').style.display = 'block';
+    launchConfetti();
+  }
+}
+
+function launchConfetti() {
+  const cel = document.getElementById('celebration');
+  cel.style.display = 'block';
+  const cols = ['#FFD700','#FF69B4','#4FC3F7','#A5D6A7','#FF6B6B','#D4A8FF','#FFB347'];
+  for (let i = 0; i < 100; i++) {
+    const p = document.createElement('div'); p.className = 'confetti-piece';
+    p.style.cssText = `left:${Math.random()*100}%;background:${cols[i % cols.length]};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.6}s`;
+    cel.appendChild(p);
+  }
+  setTimeout(() => { cel.style.display = 'none'; cel.innerHTML = ''; }, 7000);
+}
+
+function updateBars(vol) {
+  ['b1','b2','b3','b4','b5'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.height = Math.max(3, Math.min(20, vol * (0.4 + Math.random()) * 22)) + 'px';
+  });
+}
+
+async function startExperience() {
+  if (started) return;
+  started = true;
+  document.getElementById('startBtn').style.display = 'none';
+  document.getElementById('meterWrap').style.display = 'block';
+  document.getElementById('blowHint').textContent = 'Requesting camera & mic...';
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    const vid = document.getElementById('camVideo');
+    vid.srcObject = stream;
+    document.getElementById('camPlaceholder').style.display = 'none';
+    document.getElementById('camStatus').textContent = '🔴 Live';
+
+    const actx = new (window.AudioContext || window.webkitAudioContext)();
+    const src = actx.createMediaStreamSource(stream);
+    analyser = actx.createAnalyser(); analyser.fftSize = 256;
+    src.connect(analyser);
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    document.getElementById('blowHint').textContent = 'Blow into your mic to put out candles! 💨';
+    detect();
+  } catch (e) {
+    document.getElementById('camStatus').textContent = 'No access';
+    document.getElementById('blowHint').textContent = 'No mic — click each candle to blow it out!';
+    document.getElementById('meterWrap').style.display = 'none';
+  }
+}
+
+function detect() {
+  function tick() {
+    if (!analyser) return;
+    analyser.getByteFrequencyData(dataArray);
+    let sum = 0;
+    for (let v of dataArray) sum += v;
+    const vol = sum / dataArray.length / 255;
+    updateBars(vol);
+
+    if (vol > 0.18) blowAccum = Math.min(1, blowAccum + (vol - 0.18) * 0.15);
+    else blowAccum = Math.max(0, blowAccum - 0.025);
+    document.getElementById('blowFill').style.width = (blowAccum * 100) + '%';
+
+    if (blowAccum >= 0.7 && !allBlown) {
+      const rem = candleStates.map((s, i) => s ? i : -1).filter(i => i >= 0);
+      if (rem.length) {
+        blowOut(rem[Math.floor(Math.random() * rem.length)]);
+        blowAccum = 0;
+        const left = candleStates.filter(s => s).length;
+        if (left > 0) {
+          document.getElementById('blowHint').textContent = left + ' candle' + (left > 1 ? 's' : '') + ' left! Keep blowing! 💨';
+        }
+        checkDone();
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+document.getElementById('startBtn').addEventListener('click', startExperience);
+document.getElementById('relightBtn').addEventListener('click', buildCandles);
+</script>
+</body>
+</html>
